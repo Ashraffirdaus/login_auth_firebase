@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
         leading: IconButton(onPressed: signOut, icon: const Icon(Icons.logout),)
       ),
       body: const Center(
-        child: Text("logged in"),
+        child: Text("LOGGED IN"),
       ),
     );
   }

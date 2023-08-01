@@ -12,10 +12,12 @@ Future <UserCredential> signInWithEmailandPassword(String email , String passwor
     UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     return userCredential;
   }
+  
   // catch any error
   on FirebaseAuthException catch (e){
     throw Exception(e.code);
   }
+  
 }
 //sign user out
 Future <void>signOut()async{

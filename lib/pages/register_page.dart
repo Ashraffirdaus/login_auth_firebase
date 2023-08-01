@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, unused_local_variable
+// ignore_for_file: must_be_immutable
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_login_auth/const/color.dart';
@@ -8,26 +8,34 @@ import 'package:firebase_login_auth/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
-class LoginPage extends StatefulWidget {
-   LoginPage({super.key, required this.onTap});
+class RegisterPage extends StatefulWidget {
+  RegisterPage({super.key, required this.onTap});
 
   void Function()? onTap;
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  void signIn() async {
+  void signUserUp() async {
     //get instance Auth /import the isntance Auth
     final authService = Provider.of<AuthService>(context, listen: false);
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
+      // if the password and confirm password is same
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text);
+      }
+      else{
+        //show error if the password doest not match
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Passwords do not match!")));
+      }
+
       //catch if theres any error = email or password wrong
     } catch (e) {
       ScaffoldMessenger.of(context)
@@ -60,24 +68,29 @@ class _LoginPageState extends State<LoginPage> {
               hintText: "Password",
               controller: passwordController,
             ),
+            MyTextField(
+              obscureText: true,
+              hintText: "Confirm Password",
+              controller: confirmPasswordController,
+            ),
             MyButton(
-              newText: "Sign In",
-              onTap: signIn,
+              newText: "Sign Up",
+              onTap: signUserUp,
             ),
             const SizedBox(
               height: 30,
             ),
-             Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Not a member?"),
+                const Text("Already a member?"),
                 const SizedBox(
                   width: 5,
                 ),
                 GestureDetector(
                   onTap: widget.onTap,
                   child: const Text(
-                    "Register now",
+                    "Login now",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),

@@ -15,12 +15,15 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  void onTAPPP(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return const  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AuthPage(),
+      home: AuthPage()
     );
   }
 }
