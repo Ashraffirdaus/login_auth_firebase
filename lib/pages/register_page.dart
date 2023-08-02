@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_login_auth/const/color.dart';
 import 'package:firebase_login_auth/service/auth/auth_service.dart';
 import 'package:firebase_login_auth/widgets/my_button.dart';
@@ -22,22 +21,33 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+// Function to handle user sign-up
   void signUserUp() async {
-    //get instance Auth /import the isntance Auth
+    // Get an instance of the AuthService using Provider
     final authService = Provider.of<AuthService>(context, listen: false);
     try {
       // if the password and confirm password is same
       if (passwordController.text == confirmPasswordController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);
-      }
-      else{
-        //show error if the password doest not match
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Passwords do not match!")));
+        // Extract the email and password from the text controllers
+        String email =
+            emailController.text.toString(); // Ensure email is of type String
+        String password = passwordController.text
+            .toString(); // Ensure password is of type String
+
+        // Call the AuthService method to create a new user with email and password
+        await authService.createNewUserWithEmailandPassword(email, password);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Registration success")));
+
+      } else {
+      // Show a snackbar if the passwords do not match
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Passwords do not match!")));
       }
 
       //catch if theres any error = email or password wrong
     } catch (e) {
+          // Show a snackbar if there's an error during the registration process
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
     }
