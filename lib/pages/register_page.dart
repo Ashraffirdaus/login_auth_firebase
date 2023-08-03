@@ -36,6 +36,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
         // Call the AuthService method to create a new user with email and password
         await authService.createNewUserWithEmailandPassword(email, password);
+
+        
+              // Show a snackbar if the register success
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Registration success")));
 
