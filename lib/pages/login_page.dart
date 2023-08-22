@@ -1,12 +1,12 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_login_auth/const/color.dart';
 import 'package:firebase_login_auth/service/auth/auth_service.dart';
 import 'package:firebase_login_auth/widgets/my_button.dart';
 import 'package:firebase_login_auth/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   LoginPage({super.key, required this.onTap});
@@ -25,15 +25,27 @@ class _LoginPageState extends State<LoginPage> {
   void signIn() async {
 // Get an instance of the AuthService using Provider
     final authService = Provider.of<AuthService>(context, listen: false);
-    // (Note: In this function, we are not using authService directly, but we use the Firebase instance directly.)    final authService = Provider.of<AuthService>(context, listen: false);
     try {
       // Use the Firebase instance to sign in the user with the provided email and password
-      await authService.signInWithEmailandPassword(emailController.text, passwordController.text);
-    // (Note: Since we are using the Firebase instance directly, we don't handle the success case here. If sign-in is successful, the user is signed in automatically.)
+      await authService.signInWithEmailandPassword(
+          emailController.text, passwordController.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Login Success",
+          ),
+          backgroundColor: Colors.greenAccent,
+        ),
+      );
+      // (Note: Since we are using the Firebase instance directly, we don't handle the success case here. If sign-in is successful, the user is signed in automatically.)
     } catch (e) {
-          // Show a snackbar if there's an error during the sign-in process
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      // Show a snackbar if there's an error during the sign-in process
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          ("Login Failed"),
+        ),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 

@@ -11,13 +11,16 @@ final FirebaseAuth _firebaseAuth= FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 // Create new user
-Future <UserCredential> createNewUserWithEmailandPassword(String email , String password )async{
+Future <UserCredential> createNewUserWithEmailandPassword(String email , String password, String fullname , int age, String text, )async{
   try{
     UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     //after we create a user , we create a collection for each user
     _firestore.collection('users').doc(userCredential.user!.uid).set({
       'uid':userCredential.user!.uid,
-      'email':email,
+      'email':userCredential.user!.email,
+      'passsword':password,
+      'fullname':fullname,
+      'age':age
     });
     return userCredential;
   }on FirebaseAuthException catch (e){
